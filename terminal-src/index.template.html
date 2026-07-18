@@ -21,6 +21,10 @@
 
   .wrap{width:100%;max-width:900px;}
 
+  .backlink{font-size:12.5px;color:var(--muted);margin-bottom:14px;}
+  .backlink a{color:var(--muted);}
+  .backlink a:hover{color:var(--cyan);text-decoration:underline;}
+
   .hero{text-align:center;margin-bottom:22px;}
   .hero pre{font-size:clamp(6px,1.6vw,13px);line-height:1.15;color:var(--green);
     margin:0 0 6px;white-space:pre;overflow-x:auto;}
@@ -86,6 +90,8 @@
 
 <div class="wrap">
 
+  <div class="backlink"><a href="/">&larr; portfolio</a></div>
+
   <div class="hero">
     <pre id="bannerArt"></pre>
     <div class="tagline">Senior Data &amp; AI Engineer &middot; Data Lakehouses &middot; Agentic RAG/MCP Systems</div>
@@ -110,6 +116,7 @@
 
   <footer>
     <div class="links">
+      <a href="/">portfolio</a>&middot;
       <a href="https://github.com/arv1ndofficial" target="_blank" rel="noopener">github</a>&middot;
       <a href="https://www.linkedin.com/in/aravindanramesh/" target="_blank" rel="noopener">linkedin</a>&middot;
       <a href="mailto:aravindanramesh910@gmail.com">email</a>
@@ -347,6 +354,7 @@ const COMMANDS = {
     });
   },
   contact() {
+    line(`<span class="out-white">portfolio</span>  <a href="/">arv1ndofficial.github.io</a>`);
     line(`<span class="out-white">github   </span>  <a href="https://github.com/arv1ndofficial" target="_blank">github.com/arv1ndofficial</a>`);
     line(`<span class="out-white">linkedin </span>  <a href="https://www.linkedin.com/in/aravindanramesh/" target="_blank">linkedin.com/in/aravindanramesh</a>`);
     line(`<span class="out-white">email    </span>  <a href="mailto:aravindanramesh910@gmail.com">aravindanramesh910@gmail.com</a>`);
@@ -406,12 +414,17 @@ function runCommand(raw) {
   const key = cmd.toLowerCase();
   if (key === "open") {
     const target = (args[0] || "").toLowerCase();
+    if (target === "portfolio") {
+      line(`<span class="out-dim">opening portfolio...</span>`);
+      window.location.href = "/";
+      return;
+    }
     const map = {
       linkedin: "https://www.linkedin.com/in/aravindanramesh/",
       github: "https://github.com/arv1ndofficial",
     };
     if (map[target]) { line(`<span class="out-dim">opening ${target}...</span>`); window.open(map[target], "_blank"); }
-    else line(`<span class="out-dim">usage: open [linkedin|github]</span>`);
+    else line(`<span class="out-dim">usage: open [portfolio|linkedin|github]</span>`);
     return;
   }
   if (COMMANDS[key]) { COMMANDS[key](args); }
