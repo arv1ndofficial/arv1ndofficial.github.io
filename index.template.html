@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>arv1ndofficial@github ~ interactive terminal</title>
+<meta name="description" content="Aravindan Rameshbabu — interactive terminal-style GitHub profile with live contribution stats." />
+<style>
+  :root{
+    --bg:#0d1117; --bg2:#161b22; --frame:#30363d; --muted:#8b949e;
+    --green:#39d353; --green-dim:#146c37; --cyan:#58a6ff; --white:#e6edf3;
+    --red:#ff5f56; --yellow:#ffbd2e;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--white);
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
+  body{min-height:100vh;display:flex;flex-direction:column;align-items:center;
+    padding:24px 14px 60px;}
+  a{color:var(--cyan);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+
+  .wrap{width:100%;max-width:900px;}
+
+  .hero{text-align:center;margin-bottom:22px;}
+  .hero pre{font-size:clamp(6px,1.6vw,13px);line-height:1.15;color:var(--green);
+    margin:0 0 6px;white-space:pre;overflow-x:auto;}
+  .hero .tagline{color:var(--muted);font-size:14px;}
+
+  .window{background:var(--bg);border:1px solid var(--frame);border-radius:10px;
+    overflow:hidden;box-shadow:0 20px 60px -20px rgba(0,0,0,.6);}
+  .titlebar{display:flex;align-items:center;gap:8px;padding:9px 14px;
+    background:var(--bg2);border-bottom:1px solid var(--frame);position:relative;}
+  .dot{width:11px;height:11px;border-radius:50%;}
+  .titlebar .label{position:absolute;left:0;right:0;text-align:center;color:var(--muted);font-size:12px;}
+
+  .term{padding:16px;min-height:360px;max-height:60vh;overflow-y:auto;font-size:13.5px;line-height:1.55;}
+  .term .line{white-space:pre-wrap;word-break:break-word;}
+  .term .prompt-line{display:flex;gap:8px;}
+  .term .prompt-tag{color:var(--green);flex-shrink:0;}
+  .out-cmd{color:var(--cyan);}
+  .out-dim{color:var(--muted);}
+  .out-green{color:var(--green);}
+  .out-white{color:var(--white);}
+  .out-yellow{color:var(--yellow);}
+
+  .inputRow{display:flex;gap:8px;align-items:center;padding:0 16px 16px;}
+  .inputRow .prompt-tag{color:var(--green);}
+  #cmdInput{flex:1;background:transparent;border:none;outline:none;color:var(--white);
+    font-family:inherit;font-size:13.5px;caret-color:var(--green);}
+  .cursor{display:inline-block;width:8px;height:15px;background:var(--green);
+    animation:blink 1s steps(1) infinite;vertical-align:middle;}
+  @keyframes blink{50%{opacity:0;}}
+
+  .hint{text-align:center;color:var(--muted);font-size:12px;margin-top:10px;}
+  .hint kbd{background:var(--bg2);border:1px solid var(--frame);border-radius:4px;
+    padding:1px 6px;color:var(--white);}
+
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:10px;margin:18px 0;}
+  .stat{border:1px solid var(--frame);border-radius:8px;padding:12px;background:var(--bg2);}
+  .stat .num{font-size:22px;color:var(--green);font-weight:600;}
+  .stat .lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-top:2px;}
+
+  .heatmap-wrap{overflow-x:auto;padding:4px 0;}
+  .heatmap{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,10px);gap:2px;}
+  .cell{width:10px;height:10px;border-radius:2px;cursor:pointer;transition:transform .08s;}
+  .cell:hover{transform:scale(1.6);outline:1px solid var(--white);}
+  .legend{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--muted);margin-top:8px;}
+  .legend .cell{cursor:default;}
+  .legend .cell:hover{transform:none;outline:none;}
+  #tooltip{position:fixed;pointer-events:none;background:#1c2128;border:1px solid var(--frame);
+    color:var(--white);font-size:11.5px;padding:4px 8px;border-radius:6px;display:none;z-index:50;
+    box-shadow:0 8px 20px rgba(0,0,0,.5);}
+
+  footer{margin-top:26px;text-align:center;color:var(--muted);font-size:12px;}
+  footer .links{margin-bottom:8px;}
+  footer .links a{margin:0 8px;}
+
+  @media (max-width:520px){
+    .term{font-size:12.5px;}
+    .hero pre{font-size:6px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="hero">
+    <pre id="bannerArt"></pre>
+    <div class="tagline">Senior Data &amp; AI Engineer &middot; Data Lakehouses &middot; Agentic RAG/MCP Systems</div>
+  </div>
+
+  <div class="window">
+    <div class="titlebar">
+      <div class="dot" style="background:var(--red)"></div>
+      <div class="dot" style="background:var(--yellow)"></div>
+      <div class="dot" style="background:#27c93f"></div>
+      <div class="label">arv1ndofficial@github: ~</div>
+    </div>
+    <div class="term" id="term"></div>
+    <div class="inputRow">
+      <span class="prompt-tag">arv1ndofficial@github:~$</span>
+      <input id="cmdInput" autocomplete="off" autocapitalize="off" spellcheck="false" />
+      <span class="cursor" id="fakeCursor"></span>
+    </div>
+  </div>
+
+  <div class="hint">type <kbd>help</kbd> to see commands &middot; try <kbd>contributions</kbd>, <kbd>projects</kbd>, or <kbd>matrix</kbd></div>
+
+  <footer>
+    <div class="links">
+      <a href="https://github.com/arv1ndofficial" target="_blank" rel="noopener">github</a>&middot;
+      <a href="https://www.linkedin.com/in/aravindanramesh/" target="_blank" rel="noopener">linkedin</a>&middot;
+      <a href="mailto:aravindanramesh910@gmail.com">email</a>
+    </div>
+    <div>rendered client-side, no build step &middot; data refreshes daily</div>
+  </footer>
+
+</div>
+
+<div id="tooltip"></div>
+<canvas id="matrixCanvas" style="position:fixed;inset:0;z-index:-1;display:none;"></canvas>
+
+<script>
+/* =========================================================================
+   Fallback contribution data (baked in at build time). If the live fetch to
+   raw.githubusercontent.com fails -- offline, CORS hiccup, whatever -- the
+   page still works and shows real numbers as of the last sync.
+   ========================================================================= */
+window.__FALLBACK_DATA = __FALLBACK_DATA_JSON__;
+
+const LIVE_DATA_URL = "https://raw.githubusercontent.com/arv1ndofficial/arv1ndofficial/main/data/contributions.json";
+
+const BANNER = `__BANNER_ART__`;
+document.getElementById("bannerArt").textContent = BANNER;
+
+/* ---------------------------------------------------------------------- */
+const term = document.getElementById("term");
+const input = document.getElementById("cmdInput");
+const tooltip = document.getElementById("tooltip");
+
+function line(html, cls) {
+  const div = document.createElement("div");
+  div.className = "line" + (cls ? " " + cls : "");
+  div.innerHTML = html;
+  term.appendChild(div);
+  term.scrollTop = term.scrollHeight;
+  return div;
+}
+function blank() { line("&nbsp;"); }
+
+let DATA = null;
+let DERIVED = null;
+window.__getData = () => DATA;
+
+function deriveStats(raw) {
+  const days = raw.days;
+  const total = (raw.stats && raw.stats.total_contributions) ??
+    days.reduce((s, d) => s + (d.count || 0), 0);
+
+  let longest = { length: 0, start: null, end: null };
+  let run = 0, runStart = null;
+  days.forEach((d) => {
+    if ((d.count || 0) > 0) {
+      if (run === 0) runStart = d.date;
+      run++;
+      if (run > longest.length) longest = { length: run, start: runStart, end: d.date };
+    } else {
+      run = 0; runStart = null;
+    }
+  });
+
+  let current = { length: 0, start: null, end: null };
+  for (let i = days.length - 1; i >= 0; i--) {
+    if ((days[i].count || 0) > 0) {
+      current.length++;
+      current.start = days[i].date;
+      if (!current.end) current.end = days[i].date;
+    } else break;
+  }
+
+  const bestDay = days.reduce((best, d) => (!best || (d.count || 0) > best.count) ? d : best, null);
+
+  return {
+    total,
+    longest,
+    current,
+    bestDay,
+    range: { start: days[0].date, end: days[days.length - 1].date },
+  };
+}
+
+async function loadData() {
+  try {
+    const res = await fetch(LIVE_DATA_URL, { cache: "no-store" });
+    if (!res.ok) throw new Error("bad status " + res.status);
+    DATA = await res.json();
+  } catch (e) {
+    DATA = window.__FALLBACK_DATA;
+  }
+  DERIVED = deriveStats(DATA);
+  renderStats();
+}
+
+/* ---------------------------------------------------------------------- */
+function countUp(el, target, suffix) {
+  const dur = 900;
+  const start = performance.now();
+  function tick(now) {
+    const p = Math.min(1, (now - start) / dur);
+    const val = Math.round(target * (1 - Math.pow(1 - p, 3)));
+    el.textContent = val.toLocaleString() + (suffix || "");
+    if (p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+function renderStats() {
+  if (!DATA) return;
+  const box = document.getElementById("statsBox");
+  if (!box) return;
+  const stats = [
+    ["total", DERIVED.total, "contributions"],
+    ["current", DERIVED.current.length, "day streak"],
+    ["longest", DERIVED.longest.length, "day best streak"],
+    ["best", DERIVED.bestDay ? DERIVED.bestDay.count : 0, "in one day"],
+  ];
+  box.innerHTML = "";
+  stats.forEach(([key, val, label]) => {
+    const card = document.createElement("div");
+    card.className = "stat";
+    card.innerHTML = `<div class="num" data-key="${key}">0</div><div class="lbl">${label}</div>`;
+    box.appendChild(card);
+    countUp(card.querySelector(".num"), val);
+  });
+}
+
+/* ---------------------------------------------------------------------- */
+const PALETTE = ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353", "#69f0a0"];
+function colorForLevel(level) {
+  return PALETTE[Math.max(0, Math.min(level, PALETTE.length - 1))];
+}
+
+function buildHeatmapEl() {
+  const wrap = document.createElement("div");
+  wrap.className = "heatmap-wrap";
+  const grid = document.createElement("div");
+  grid.className = "heatmap";
+
+  const days = DATA.days;
+  let col = [];
+  const first = new Date(days[0].date + "T00:00:00");
+  const leadPad = first.getDay();
+  for (let i = 0; i < leadPad; i++) col.push(null);
+
+  const cols = [];
+  days.forEach((d) => {
+    const date = new Date(d.date + "T00:00:00");
+    const weekday = date.getDay();
+    while (col.length < weekday) col.push(null);
+    col.push(d);
+    if (col.length === 7) { cols.push(col); col = []; }
+  });
+  if (col.length) { while (col.length < 7) col.push(null); cols.push(col); }
+
+  cols.forEach((column) => {
+    column.forEach((d) => {
+      const cell = document.createElement("div");
+      cell.className = "cell";
+      if (!d) {
+        cell.style.background = "transparent";
+        cell.style.cursor = "default";
+      } else {
+        cell.style.background = colorForLevel(d.level || 0);
+        cell.addEventListener("mousemove", (e) => {
+          tooltip.style.display = "block";
+          tooltip.style.left = e.clientX + 14 + "px";
+          tooltip.style.top = e.clientY + 14 + "px";
+          tooltip.textContent = `${d.date}: ${d.count} contribution${d.count === 1 ? "" : "s"}`;
+        });
+        cell.addEventListener("mouseleave", () => { tooltip.style.display = "none"; });
+      }
+      grid.appendChild(cell);
+    });
+  });
+
+  wrap.appendChild(grid);
+
+  const legend = document.createElement("div");
+  legend.className = "legend";
+  legend.innerHTML = "less ";
+  PALETTE.forEach((c) => {
+    legend.innerHTML += `<span class="cell" style="background:${c}"></span> `;
+  });
+  legend.innerHTML += " more";
+  wrap.appendChild(legend);
+
+  return wrap;
+}
+
+/* ---------------------------------------------------------------------- */
+const COMMANDS = {
+  help() {
+    line(`<span class="out-white">available commands:</span>`);
+    [
+      ["whoami", "who is this guy anyway"],
+      ["experience", "work history"],
+      ["skills", "tech stack"],
+      ["projects", "things I've shipped"],
+      ["contributions", "live GitHub contribution heatmap"],
+      ["streak", "current / longest streak"],
+      ["contact", "how to reach me"],
+      ["photo", "animated ascii self-portrait"],
+      ["matrix", "toggle a little fun"],
+      ["clear", "clear the terminal"],
+    ].forEach(([c, d]) => line(`  <span class="out-cmd">${c.padEnd(15)}</span><span class="out-dim">${d}</span>`));
+  },
+  whoami() {
+    line(`<span class="out-white">Senior Data &amp; AI Engineer, 5+ years, Chennai, India</span>`);
+    line(`<span class="out-dim">Currently: Senior Data Engineer (SDE 2) @ M2P Fintech</span>`);
+    line(`<span class="out-dim">Past: Data Engineer @ Tata Consultancy Services</span>`);
+    line(`<span class="out-dim">Building open-source data lakes on EKS &amp; agentic RAG/MCP pipelines</span>`);
+  },
+  experience() {
+    [
+      ["Feb 2025 - now", "Senior Data Engineer (SDE 2)", "M2P Fintech"],
+      ["Apr 2021 - Feb 2025", "Data Engineer", "Tata Consultancy Services"],
+    ].forEach(([d, r, c]) => line(`<span class="out-green">${d.padEnd(22)}</span><span class="out-white">${r.padEnd(30)}</span><span class="out-dim">${c}</span>`));
+  },
+  skills() {
+    line(`<span class="out-cmd">data &amp; streaming</span>  Spark, PySpark, Spark SQL/Streaming, Kafka, Hadoop, Airflow, Trino, Dremio, Iceberg, Nessie`);
+    line(`<span class="out-cmd">ai / genai      </span>  RAG Systems, MCP (Model Context Protocol), LLMs, ChromaDB, SeqGAN, Ollama`);
+    line(`<span class="out-cmd">cloud &amp; infra   </span>  AWS (EC2, S3, Glue, IAM), Kubernetes, Databricks, GitHub`);
+    line(`<span class="out-cmd">databases       </span>  MongoDB, MySQL, PostgreSQL, Cassandra`);
+    line(`<span class="out-cmd">languages       </span>  Python, SQL, Scala`);
+  },
+  projects() {
+    [
+      ["Prism — Agentic Control Plane for a Data Lakehouse", "Full-stack control plane hosting Airflow, Spark, Trino &amp; Unity Catalog; MCP-friendly chat-driven ETL orchestration.", "M2P Fintech"],
+      ["Synthetic Telecom Data &amp; RAG/MCP Orchestration", "SeqGAN synthetic data generation, ChromaDB-backed RAG, and MCP-exposed tools for LLM agents.", "Tata Consultancy Services"],
+      ["Real-Time Location-Based Marketing", "Spark Streaming ingestion from ISP towers, Cassandra storage, GDPR-compliant delivery pipeline.", "Tata Consultancy Services"],
+    ].forEach(([n, d, org]) => {
+      line(`<span class="out-cmd">&gt; ${n}</span>`);
+      line(`  <span class="out-dim">${d}</span>`);
+      line(`  <span class="out-dim">${org}</span>`);
+    });
+  },
+  contact() {
+    line(`<span class="out-white">github   </span>  <a href="https://github.com/arv1ndofficial" target="_blank">github.com/arv1ndofficial</a>`);
+    line(`<span class="out-white">linkedin </span>  <a href="https://www.linkedin.com/in/aravindanramesh/" target="_blank">linkedin.com/in/aravindanramesh</a>`);
+    line(`<span class="out-white">email    </span>  <a href="mailto:aravindanramesh910@gmail.com">aravindanramesh910@gmail.com</a>`);
+  },
+  photo() {
+    const img = document.createElement("img");
+    img.src = "https://raw.githubusercontent.com/arv1ndofficial/arv1ndofficial/main/avi-ascii.svg";
+    img.style.maxWidth = "100%";
+    img.style.borderRadius = "8px";
+    img.style.border = "1px solid var(--frame)";
+    img.alt = "animated ascii self-portrait";
+    const div = document.createElement("div");
+    div.className = "line";
+    div.appendChild(img);
+    term.appendChild(div);
+    term.scrollTop = term.scrollHeight;
+  },
+  streak() {
+    if (!DATA) { line(`<span class="out-dim">loading contribution data...</span>`); return; }
+    line(`<span class="out-green">current streak:</span>  ${DERIVED.current.length} days${DERIVED.current.start ? ` (${DERIVED.current.start} → ${DERIVED.current.end})` : ""}`);
+    line(`<span class="out-green">longest streak:</span>  ${DERIVED.longest.length} days${DERIVED.longest.start ? ` (${DERIVED.longest.start} → ${DERIVED.longest.end})` : ""}`);
+    line(`<span class="out-green">best day:</span>       ${DERIVED.bestDay.count} contributions on ${DERIVED.bestDay.date}`);
+    line(`<span class="out-green">total:</span>          ${DERIVED.total.toLocaleString()} contributions since ${DERIVED.range.start}`);
+  },
+  contributions() {
+    if (!DATA) { line(`<span class="out-dim">loading contribution data...</span>`); return; }
+    line(`<span class="out-dim">${DERIVED.total.toLocaleString()} contributions &middot; ${DERIVED.range.start} → ${DERIVED.range.end}</span>`);
+    const div = document.createElement("div");
+    div.className = "line";
+    div.appendChild(buildHeatmapEl());
+    term.appendChild(div);
+    term.scrollTop = term.scrollHeight;
+    line(`<span class="out-dim">hover a cell for the exact date and count</span>`);
+  },
+  matrix() {
+    toggleMatrix();
+    line(`<span class="out-dim">${matrixOn ? "matrix mode on -- type 'matrix' again to turn it off" : "back to normal"}</span>`);
+  },
+  clear() {
+    term.innerHTML = "";
+  },
+  banner() {
+    line(`<pre style="color:var(--green);margin:0;font-size:9px;">${BANNER}</pre>`);
+  },
+  sudo(args) {
+    line(`<span class="out-yellow">[sudo] password for arv1ndofficial:</span> <span class="out-dim">nice try. this is a static site.</span>`);
+  },
+};
+COMMANDS["about"] = COMMANDS.whoami;
+COMMANDS["ls"] = COMMANDS.projects;
+
+function runCommand(raw) {
+  const trimmed = raw.trim();
+  line(`<span class="prompt-tag">arv1ndofficial@github:~$</span> <span class="out-white">${escapeHtml(trimmed)}</span>`, "prompt-line");
+  if (!trimmed) return;
+  const [cmd, ...args] = trimmed.split(/\s+/);
+  const key = cmd.toLowerCase();
+  if (key === "open") {
+    const target = (args[0] || "").toLowerCase();
+    const map = {
+      linkedin: "https://www.linkedin.com/in/aravindanramesh/",
+      github: "https://github.com/arv1ndofficial",
+    };
+    if (map[target]) { line(`<span class="out-dim">opening ${target}...</span>`); window.open(map[target], "_blank"); }
+    else line(`<span class="out-dim">usage: open [linkedin|github]</span>`);
+    return;
+  }
+  if (COMMANDS[key]) { COMMANDS[key](args); }
+  else line(`<span class="out-dim">command not found: ${escapeHtml(cmd)} — type 'help'</span>`);
+}
+
+function escapeHtml(s) {
+  return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+input.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    const val = input.value;
+    input.value = "";
+    runCommand(val);
+  }
+});
+document.addEventListener("click", () => input.focus());
+
+/* ---------------------------------------------------------------------- */
+let matrixOn = false;
+function toggleMatrix() {
+  matrixOn = !matrixOn;
+  const canvas = document.getElementById("matrixCanvas");
+  canvas.style.display = matrixOn ? "block" : "none";
+  if (matrixOn) startMatrix();
+}
+function startMatrix() {
+  const canvas = document.getElementById("matrixCanvas");
+  const ctx = canvas.getContext && canvas.getContext("2d");
+  if (!ctx) return;
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const cols = Math.floor(canvas.width / 14);
+  const drops = new Array(cols).fill(0);
+  const chars = "01アビヴァシシュタ<>/{}[]#*";
+  function draw() {
+    if (!matrixOn) return;
+    ctx.fillStyle = "rgba(13,17,23,0.12)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#39d353";
+    ctx.font = "13px monospace";
+    drops.forEach((y, i) => {
+      const ch = chars[Math.floor(Math.random() * chars.length)];
+      ctx.fillText(ch, i * 14, y * 14);
+      drops[i] = y * 14 > canvas.height && Math.random() > 0.975 ? 0 : y + 1;
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+/* ---------------------------------------------------------------------- */
+function boot() {
+  line(`<span class="out-green">connected to github.com/arv1ndofficial</span>`);
+  line(`<span class="out-dim">type 'help' to see available commands</span>`);
+  blank();
+
+  const statsWrap = document.createElement("div");
+  statsWrap.className = "line";
+  statsWrap.innerHTML = `<div class="stats" id="statsBox"></div>`;
+  term.appendChild(statsWrap);
+
+  blank();
+  runCommand("whoami");
+  input.focus();
+}
+
+loadData();
+boot();
+</script>
+</body>
+</html>
