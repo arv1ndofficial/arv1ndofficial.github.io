@@ -15,7 +15,7 @@ export const profile = {
 export const stats = [
   { label: "Years of experience", value: "5+" },
   { label: "Engineers led", value: "5" },
-  { label: "Awards won", value: "2" },
+  { label: "Awards won", value: "3" },
   { label: "Certifications", value: "4" },
 ];
 
@@ -134,6 +134,7 @@ export const experience: Experience[] = [
       "**Serverless ETL Automation:** Automated serverless ETL with AWS Glue and Lambda, cutting manual schema management by 40% with real-time data validation.",
       "**Workload Security:** Hardened workloads using IRSA (IAM Roles for Service Accounts) for Spark, Airflow, and Trino; integrated Teams webhook alerting for instant incident notifications.",
       "**Engineering Leadership:** Led a 5-member team to deliver the end-to-end data lake platform on schedule, earning recognition for technical ownership and cross-functional leadership.",
+      "**Award Recognition:** Honored with 'Above & Beyond in Engineering (Applause 2026)' for exceptional technical dedication and impactful platform delivery.",
     ],
   },
   {
@@ -267,6 +268,7 @@ export const certifications = [
 ];
 
 export const awards = [
-  { name: "Technical Excellence", issuer: "Tata Consultancy Services", period: "Aug 2022" },
+  { name: "Above & Beyond in Engineering (Applause 2026)", issuer: "M2P Fintech", period: "Aug 2026" },
   { name: "Inspiring Talent", issuer: "Tata Consultancy Services", period: "Jun 2023" },
+  { name: "Technical Excellence", issuer: "Tata Consultancy Services", period: "Aug 2022" },
 ];
