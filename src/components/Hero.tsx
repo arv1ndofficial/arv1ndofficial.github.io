@@ -26,16 +26,20 @@ export default function Hero() {
 
       <div className="relative z-10 mx-auto grid w-full max-w-5xl grid-cols-1 items-center gap-12 px-6 py-32 md:grid-cols-[1.15fr_0.85fr]">
         <div>
-          <motion.p
+          <motion.div
             variants={fadeUp}
             initial="hidden"
             animate="show"
             custom={0}
-            className="mb-4 font-mono text-sm text-cyan"
+            className="mb-4 flex flex-wrap items-center gap-2.5 font-mono text-xs"
           >
-            <span className="mr-2 inline-block h-2 w-2 rounded-full bg-green animate-blink" />
-            Available for new opportunities
-          </motion.p>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-green/30 bg-green/10 px-3 py-1 text-green">
+              <span className="h-1.5 w-1.5 rounded-full bg-green animate-pulse" />
+              Available for Senior Roles
+            </span>
+            <span className="text-muted/60 hidden sm:inline">&bull;</span>
+            <span className="text-cyan hidden sm:inline font-medium">5+ Yrs &middot; EKS Lakehouses &middot; Agentic AI</span>
+          </motion.div>
 
           <motion.h1
             variants={fadeUp}
@@ -78,25 +82,31 @@ export default function Hero() {
               href="#projects"
               className="rounded-full bg-gradient-to-r from-cyan to-violet px-6 py-3 text-sm font-semibold text-bg transition-transform hover:scale-[1.03] active:scale-95"
             >
-              View my work
+              View My Work
+            </a>
+            <a
+              href="#contact"
+              className="rounded-full border border-cyan/40 bg-cyan/5 px-5 py-3 text-sm font-semibold text-cyan transition-all hover:bg-cyan/15 active:scale-95"
+            >
+              Contact Me
             </a>
             <a
               href={profile.resumeUrl}
               download
-              className="inline-flex items-center gap-2 rounded-full border border-border-strong px-6 py-3 text-sm font-semibold text-text transition-colors hover:border-cyan hover:text-cyan"
+              className="inline-flex items-center gap-2 rounded-full border border-border-strong px-5 py-3 text-sm font-semibold text-text transition-colors hover:border-cyan hover:text-cyan"
             >
-              <FileDown size={16} /> Download Resume
+              <FileDown size={15} /> Resume
             </a>
 
-            <div className="ml-1 flex items-center gap-4 pl-2">
+            <div className="ml-1 flex items-center gap-3.5 pl-2">
               <a href={profile.github} target="_blank" rel="noopener" className="text-muted hover:text-cyan transition-colors" title="GitHub">
-                <GithubIcon size={20} />
+                <GithubIcon size={19} />
               </a>
               <a href={profile.linkedin} target="_blank" rel="noopener" className="text-muted hover:text-cyan transition-colors" title="LinkedIn">
-                <LinkedinIcon size={20} />
+                <LinkedinIcon size={19} />
               </a>
               <a href={`mailto:${profile.email}`} className="text-muted hover:text-cyan transition-colors" title="Email">
-                <Mail size={20} />
+                <Mail size={19} />
               </a>
             </div>
           </motion.div>

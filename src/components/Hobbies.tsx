@@ -3,6 +3,20 @@ import { Tv, Cpu, Sparkles, ExternalLink, Wrench } from "lucide-react";
 import Section from "./Section";
 import { hobbyProjects } from "../data/resume";
 
+function renderFormattedText(text: string) {
+  const parts = text.split(/(\*\*.*?\*\*)/g);
+  return parts.map((part, index) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return (
+        <strong key={index} className="font-semibold text-text">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+    return part;
+  });
+}
+
 export default function Hobbies() {
   return (
     <Section id="hobbies" index="05" title="Hobbies & Systems Tinkering">
@@ -64,7 +78,7 @@ export default function Hobbies() {
                 {project.bullets.map((b) => (
                   <li key={b} className="flex gap-2.5 text-xs leading-relaxed text-muted sm:text-sm">
                     <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-violet" />
-                    <span>{b}</span>
+                    <span>{renderFormattedText(b)}</span>
                   </li>
                 ))}
               </ul>

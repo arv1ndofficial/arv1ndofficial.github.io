@@ -3,6 +3,20 @@ import { FolderGit2, ExternalLink } from "lucide-react";
 import Section from "./Section";
 import { projects } from "../data/resume";
 
+function renderFormattedText(text: string) {
+  const parts = text.split(/(\*\*.*?\*\*)/g);
+  return parts.map((part, index) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return (
+        <strong key={index} className="font-semibold text-text">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+    return part;
+  });
+}
+
 export default function Projects() {
   return (
     <Section id="projects" index="04" title="Data & AI Engineering Projects">
@@ -21,12 +35,12 @@ export default function Projects() {
 
             <div className="relative flex items-start justify-between gap-4">
               <div className="flex items-start gap-4">
-                <span className="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-bg-soft text-violet">
+                <span className="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-bg-soft text-violet group-hover:bg-violet/10 transition-colors">
                   <FolderGit2 size={18} />
                 </span>
                 <div className="min-w-0">
                   <h3 className="text-lg font-semibold text-text sm:text-xl">{project.name}</h3>
-                  <p className="mt-0.5 text-sm text-cyan">{project.description}</p>
+                  <p className="mt-0.5 text-sm text-cyan font-medium">{project.description}</p>
                   <p className="text-xs text-muted">{project.org}</p>
                 </div>
               </div>
@@ -36,9 +50,10 @@ export default function Projects() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="View source repository"
-                  className="shrink-0 rounded-lg p-2 text-muted transition-colors hover:bg-bg-soft hover:text-cyan"
+                  className="shrink-0 rounded-lg border border-border-strong bg-bg-soft p-2.5 text-muted transition-colors hover:border-cyan hover:text-cyan"
+                  title="View GitHub Repository"
                 >
-                  <ExternalLink size={18} />
+                  <ExternalLink size={16} />
                 </a>
               )}
             </div>
@@ -46,17 +61,17 @@ export default function Projects() {
             <ul className="relative mt-5 space-y-2.5">
               {project.bullets.map((b) => (
                 <li key={b} className="flex gap-2.5 text-sm leading-relaxed text-muted">
-                  <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-cyan" />
-                  <span>{b}</span>
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan" />
+                  <span>{renderFormattedText(b)}</span>
                 </li>
               ))}
             </ul>
 
-            <div className="relative mt-5 flex flex-wrap gap-2">
+            <div className="relative mt-6 flex flex-wrap gap-2">
               {project.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-full border border-border-strong px-2.5 py-1 font-mono text-[11px] text-muted"
+                  className="rounded-full border border-border-strong bg-bg-soft/50 px-2.5 py-1 font-mono text-[11px] text-muted"
                 >
                   {tag}
                 </span>

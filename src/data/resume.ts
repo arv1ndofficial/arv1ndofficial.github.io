@@ -9,7 +9,7 @@ export const profile = {
   liveTerminal: `${import.meta.env.BASE_URL}terminal/`,
   resumeUrl: `${import.meta.env.BASE_URL}Aravindan-Rameshbabu-Resume.pdf`,
   summary:
-    "Senior Data & AI Engineer with 5+ years spanning large-scale cloud data platforms and applied GenAI systems. Equally at home architecting an open-source data lake on EKS (Spark, Iceberg, Trino, Airflow) and building RAG pipelines with ChromaDB, MCP-based tool orchestration, and open-source LLMs. Led a 5-member team end-to-end and consistently recognized for technical ownership and delivery.",
+    "Senior Data & AI Engineer with 5+ years building high-throughput cloud data platforms and applied GenAI architectures. Led a 5-engineer team standing up open-source lakehouses on EKS (Spark, Iceberg, Trino, Airflow), engineered fintech SCD-2 audit history, and pioneered agentic MCP integrations connecting LLMs to production data workflows.",
 };
 
 export const stats = [
@@ -17,6 +17,58 @@ export const stats = [
   { label: "Engineers led", value: "5" },
   { label: "Awards won", value: "2" },
   { label: "Certifications", value: "4" },
+];
+
+export type JourneyMilestone = {
+  period: string;
+  stage: string;
+  title: string;
+  org: string;
+  description: string;
+  badge: string;
+  isCurrent?: boolean;
+  isFuture?: boolean;
+};
+
+export const journeyMilestones: JourneyMilestone[] = [
+  {
+    period: "2016 — 2020",
+    stage: "01. The Origin",
+    title: "Engineering Foundation & Computer Vision",
+    org: "University College of Engineering (Anna University)",
+    description:
+      "Graduated First Class in ECE. Final-year project on OpenCV facial recognition models ignited a passion for computational efficiency, matrix algorithms, and large-scale data systems.",
+    badge: "Foundation",
+  },
+  {
+    period: "2021 — 2025",
+    stage: "02. Scale & Streaming",
+    title: "Enterprise Big Data & Cloud Migrations",
+    org: "Tata Consultancy Services",
+    description:
+      "Built Kubernetes-managed PySpark pipelines, automated Airflow orchestration, and engineered Kafka-Spark streaming pipelines at telecom scale. Recognized with Technical Excellence and Inspiring Talent awards.",
+    badge: "Enterprise Scale",
+  },
+  {
+    period: "2025 — Present",
+    stage: "03. Current Impact",
+    title: "EKS Lakehouse & Agentic Data Orchestration",
+    org: "M2P Fintech (SDE 2)",
+    description:
+      "Architected open-source data lakehouse on EKS (Spark, Iceberg, Trino, Nessie), led a 5-engineer team, built fintech SCD-2 audit pipelines, and pioneered agentic MCP integrations for LLM-driven ETL.",
+    badge: "Current Role",
+    isCurrent: true,
+  },
+  {
+    period: "Next Frontier",
+    stage: "04. Future Trajectory",
+    title: "Autonomous Data Systems & Frontier AI",
+    org: "Career Vision & Growth",
+    description:
+      "Dedicated to building a transformative career at the intersection of scalable data engineering and AI — architecting self-healing declarative pipelines, unified lakehouses, and production-grade agentic intelligence.",
+    badge: "Vision",
+    isFuture: true,
+  },
 ];
 
 export type SkillGroup = {
@@ -76,13 +128,12 @@ export const experience: Experience[] = [
     location: "Chennai, India",
     period: "Feb 2025 — Present",
     bullets: [
-      "Architected a scalable open-source data lake on EKS integrating Spark, Iceberg, Trino, Airflow, Nessie Catalog, and blob storage, significantly reducing data access latency and storage costs.",
-      "Designed and automated ETL workflows using Airflow DAGs with Spark and Iceberg for data processing, Trino for federated querying, and Nessie Catalog for metadata management.",
-      "Extended the platform into an agentic tech stack, driving ETL pipelines via MCP (Model Context Protocol) to let LLM agents trigger and monitor data workflows.",
-      "Built SCD Type 2 history pipelines on Apache Iceberg with a Hot/Cold table architecture and dynamic watermarking, enabling full fintech audit trails and KPI roll-ups over impacted date partitions.",
-      "Automated serverless ETL with AWS Glue and Lambda, cutting manual schema management by 40% and enabling real-time data validation.",
-      "Secured all workloads using IRSA (IAM Roles for Service Accounts) for Spark, Airflow, and Trino; integrated Teams webhook alerting for instant pipeline failure notifications.",
-      "Led a 5-member team to deliver the end-to-end data lake platform on time, earning recognition for technical ownership and cross-functional leadership.",
+      "**EKS Open-Source Lakehouse:** Architected scalable data lake on EKS integrating Spark, Iceberg, Trino, Airflow, and Nessie Catalog, reducing data access latency and cloud storage costs.",
+      "**Agentic MCP Integration:** Extended the platform into an agentic tech stack, driving ETL pipelines via MCP (Model Context Protocol) to let LLM agents trigger and monitor data workflows.",
+      "**Fintech SCD-2 Audit History:** Built SCD Type 2 history pipelines on Apache Iceberg with a Hot/Cold architecture and dynamic watermarking, enabling full audit trails over impacted partitions.",
+      "**Serverless ETL Automation:** Automated serverless ETL with AWS Glue and Lambda, cutting manual schema management by 40% with real-time data validation.",
+      "**Workload Security:** Hardened workloads using IRSA (IAM Roles for Service Accounts) for Spark, Airflow, and Trino; integrated Teams webhook alerting for instant incident notifications.",
+      "**Engineering Leadership:** Led a 5-member team to deliver the end-to-end data lake platform on schedule, earning recognition for technical ownership and cross-functional leadership.",
     ],
   },
   {
@@ -91,12 +142,12 @@ export const experience: Experience[] = [
     location: "Chennai, India",
     period: "Apr 2021 — Feb 2025",
     bullets: [
-      "Developed and optimised PySpark applications on a Kubernetes-managed Spark cluster for large-scale advanced analytics.",
-      "Automated ETL workflows using Apache Airflow DAGs on Kubernetes, improving pipeline efficiency and resource utilisation.",
-      "Migrated Oracle RDBMS to GCP Cloud using PySpark and Spark-SQL, reducing processing time and improving data reliability.",
-      "Optimised storage and query performance by implementing partitioned Hive tables with compression across AWS S3 and GCP.",
-      "Integrated Spark API and Kafka for real-time data processing; migrated VDS to Dremio for optimised federated data access.",
-      "Recognised with 'Technical Excellence' and 'Inspiring Talent' awards for consistently delivering high-impact data engineering projects.",
+      "**Kubernetes Spark Optimization:** Developed and optimized PySpark applications on a Kubernetes-managed Spark cluster for large-scale enterprise analytics.",
+      "**Airflow ETL DAGs:** Automated ETL workflows using Apache Airflow DAGs on Kubernetes, improving pipeline efficiency and resource utilization.",
+      "**Oracle-to-Cloud Migration:** Migrated legacy Oracle RDBMS to GCP using PySpark and Spark-SQL, reducing processing time and improving data consistency.",
+      "**Storage & Query Performance:** Optimized storage by implementing partitioned Hive tables with compression across AWS S3 and GCP.",
+      "**Real-Time Streaming:** Integrated Spark API and Kafka for real-time data processing; migrated VDS to Dremio for optimized federated query access.",
+      "**Award-Winning Delivery:** Recognized with 'Technical Excellence' and 'Inspiring Talent' awards for consistently delivering high-impact data engineering projects.",
     ],
   },
 ];
@@ -116,10 +167,10 @@ export const projects: Project[] = [
     org: "Personal Engineering Project",
     description: "Streaming medallion lakehouse with Auto Loader, Delta Live Tables & SCD Type 1 CDC",
     bullets: [
-      "Architected an end-to-end Medallion lakehouse on Databricks using Spark Declarative Pipelines (DLT), processing batch and streaming trip transactions across 10 Tier-2 cities in India.",
-      "Implemented Databricks Auto Loader streaming ingestion with schema inference and rescue mode for resilient raw data landing in Bronze Delta tables.",
-      "Engineered automated SCD Type 1 Change Data Capture (CDC) upsert flows with dynamic watermarking, out-of-order sequence resolution, and data quality expectations.",
-      "Constructed dimensional models including dynamic calendar logic with national holiday markers and optimized Gold views for city-level mobility analytics.",
+      "**Declarative Medallion Architecture:** Architected an end-to-end Medallion lakehouse on Databricks using Spark Declarative Pipelines (DLT) across 10 Tier-2 cities in India.",
+      "**Auto Loader Ingestion:** Implemented Databricks Auto Loader streaming ingestion with schema inference and rescue mode for zero-data-loss raw landing in Bronze Delta tables.",
+      "**Automated SCD-1 CDC Flow:** Engineered automated SCD Type 1 Change Data Capture (CDC) upsert flows with dynamic sequence timestamps and data quality expectations.",
+      "**Curated Dimensional Analytics:** Constructed dimensional models including dynamic calendar logic with national holiday markers and optimized Gold views for city-level analytics.",
     ],
     tags: ["Databricks", "Delta Live Tables", "PySpark", "Auto Loader", "CDC / SCD Type 1", "Medallion Architecture", "Unity Catalog"],
     repoUrl: "https://github.com/arv1ndofficial/transport-proj-dbx",
@@ -129,9 +180,9 @@ export const projects: Project[] = [
     org: "M2P Fintech",
     description: "Agentic control plane for a data lakehouse",
     bullets: [
-      "Built a full-stack control plane hosting Airflow, Spark, Trino, and Unity Catalog to orchestrate ETL pipelines that ingest multi-source data into Iceberg and Delta tables.",
-      "Made the entire pipeline MCP-friendly, letting users define source/destination connections and dictate table migrations through a single chat interface instead of manual config.",
-      "Automated end-to-end orchestration — Airflow-driven DAGs trigger Spark jobs for ingestion, transformation, and load, from source connection to target table.",
+      "**Unified Platform Plane:** Built a full-stack control plane hosting Airflow, Spark, Trino, and Unity Catalog to orchestrate ETL pipelines ingesting into Iceberg and Delta tables.",
+      "**MCP-Friendly Chat Orchestration:** Made the pipeline MCP-friendly, letting users define source/destination connections and dictate table migrations through a single chat interface.",
+      "**Automated Ingestion-to-Load:** Automated end-to-end orchestration — Airflow-driven DAGs trigger Spark jobs for ingestion, transformation, and load from source to target.",
     ],
     tags: ["Airflow", "Spark", "Trino", "Unity Catalog", "MCP", "Iceberg"],
   },
@@ -140,10 +191,9 @@ export const projects: Project[] = [
     org: "Tata Consultancy Services",
     description: "Synthetic data generation + agentic retrieval for telecom",
     bullets: [
-      "Built a SeqGAN architecture to generate high-fidelity synthetic telecom data, reducing model bias on imbalanced datasets.",
-      "Developed a RAG system with ChromaDB vector embeddings and Ollama-powered open-source LLMs for fast, domain-specific intelligence retrieval.",
-      "Exposed retrieval and data tools to LLMs via MCP servers, standardising how agents accessed telecom data sources.",
-      "Orchestrated the full AI lifecycle — ingestion, embedding, deployment, and monitoring — via Apache Airflow.",
+      "**SeqGAN Synthetic Generation:** Built a SeqGAN architecture to generate high-fidelity synthetic telecom data, reducing model bias on imbalanced datasets.",
+      "**Domain-Specific RAG:** Developed a RAG system with ChromaDB vector embeddings and Ollama-powered open-source LLMs for fast domain intelligence retrieval.",
+      "**Agent Tooling via MCP:** Exposed retrieval and data tools to LLMs via MCP servers, standardizing how agents accessed telecom data sources with Airflow orchestration.",
     ],
     tags: ["SeqGAN", "RAG", "ChromaDB", "Ollama", "MCP", "Airflow"],
   },
@@ -152,10 +202,10 @@ export const projects: Project[] = [
     org: "Tata Consultancy Services",
     description: "Spark Streaming pipeline for GDPR-compliant targeting",
     bullets: [
-      "Used Spark Streaming to ingest real-time location data from ISP towers and cross-validate against customer records to identify marketing targets.",
-      "Stored recipient history in Cassandra NoSQL with a 6-month retention window; delivered filtered data to the Macy API in full GDPR compliance.",
+      "**Low-Latency Location Ingestion:** Used Spark Streaming to ingest real-time location data from ISP towers and cross-validate against customer records.",
+      "**GDPR-Compliant Storage:** Stored recipient history in Cassandra NoSQL with a 6-month retention window; delivered filtered data to the Macy API in full GDPR compliance.",
     ],
-    tags: ["Spark Streaming", "Cassandra", "GDPR"],
+    tags: ["Spark Streaming", "Cassandra", "GDPR", "Kafka"],
   },
 ];
 
