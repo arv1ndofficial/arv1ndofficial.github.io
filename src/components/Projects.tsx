@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { FolderGit2 } from "lucide-react";
+import { FolderGit2, ExternalLink } from "lucide-react";
 import Section from "./Section";
 import { projects } from "../data/resume";
 
@@ -19,15 +19,28 @@ export default function Projects() {
           >
             <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-gradient-to-br from-cyan/10 to-violet/10 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100" />
 
-            <div className="relative flex items-start gap-4">
-              <span className="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-bg-soft text-violet">
-                <FolderGit2 size={18} />
-              </span>
-              <div className="min-w-0">
-                <h3 className="text-lg font-semibold text-text sm:text-xl">{project.name}</h3>
-                <p className="mt-0.5 text-sm text-cyan">{project.description}</p>
-                <p className="text-xs text-muted">{project.org}</p>
+            <div className="relative flex items-start justify-between gap-4">
+              <div className="flex items-start gap-4">
+                <span className="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-bg-soft text-violet">
+                  <FolderGit2 size={18} />
+                </span>
+                <div className="min-w-0">
+                  <h3 className="text-lg font-semibold text-text sm:text-xl">{project.name}</h3>
+                  <p className="mt-0.5 text-sm text-cyan">{project.description}</p>
+                  <p className="text-xs text-muted">{project.org}</p>
+                </div>
               </div>
+              {project.repoUrl && (
+                <a
+                  href={project.repoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="View source repository"
+                  className="shrink-0 rounded-lg p-2 text-muted transition-colors hover:bg-bg-soft hover:text-cyan"
+                >
+                  <ExternalLink size={18} />
+                </a>
+              )}
             </div>
 
             <ul className="relative mt-5 space-y-2.5">

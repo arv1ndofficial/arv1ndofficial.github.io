@@ -36,6 +36,8 @@ export const skillGroups: SkillGroup[] = [
       "PySpark",
       "Spark SQL",
       "Spark Streaming",
+      "Delta Live Tables (DLT)",
+      "Databricks Auto Loader",
       "Apache Kafka",
       "Hadoop",
       "Airflow",
@@ -55,7 +57,7 @@ export const skillGroups: SkillGroup[] = [
   },
   {
     label: "Languages & Patterns",
-    skills: ["Python", "SQL", "Scala", "Multi-tenant ETL Orchestration", "Medallion Architecture"],
+    skills: ["Python", "SQL", "Scala", "Change Data Capture (CDC / SCD)", "Multi-tenant ETL Orchestration", "Medallion Architecture"],
   },
 ];
 
@@ -105,9 +107,23 @@ export type Project = {
   description: string;
   bullets: string[];
   tags: string[];
+  repoUrl?: string;
 };
 
 export const projects: Project[] = [
+  {
+    name: "Goodcabs — Transportation Lakehouse & Declarative CDC",
+    org: "Personal Engineering Project",
+    description: "Streaming medallion lakehouse with Auto Loader, Delta Live Tables & SCD Type 1 CDC",
+    bullets: [
+      "Architected an end-to-end Medallion lakehouse on Databricks using Spark Declarative Pipelines (DLT), processing batch and streaming trip transactions across 10 Tier-2 cities in India.",
+      "Implemented Databricks Auto Loader streaming ingestion with schema inference and rescue mode for resilient raw data landing in Bronze Delta tables.",
+      "Engineered automated SCD Type 1 Change Data Capture (CDC) upsert flows with dynamic watermarking, out-of-order sequence resolution, and data quality expectations.",
+      "Constructed dimensional models including dynamic calendar logic with national holiday markers and optimized Gold views for city-level mobility analytics.",
+    ],
+    tags: ["Databricks", "Delta Live Tables", "PySpark", "Auto Loader", "CDC / SCD Type 1", "Medallion Architecture", "Unity Catalog"],
+    repoUrl: "https://github.com/arv1ndofficial/transport-proj-dbx",
+  },
   {
     name: "Prism",
     org: "M2P Fintech",
