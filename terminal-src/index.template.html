@@ -314,7 +314,8 @@ const COMMANDS = {
       ["whoami", "who is this guy anyway"],
       ["experience", "work history"],
       ["skills", "tech stack"],
-      ["projects", "things I've shipped"],
+      ["projects", "data & AI platforms I've shipped"],
+      ["hobbies", "hardware, TV modding & embedded tinkering"],
       ["contributions", "live GitHub contribution heatmap"],
       ["streak", "current / longest streak"],
       ["contact", "how to reach me"],
@@ -352,6 +353,16 @@ const COMMANDS = {
       line(`<span class="out-cmd">&gt; ${n}</span>`);
       line(`  <span class="out-dim">${d}</span>`);
       line(`  <span class="out-dim">${org}</span>`);
+    });
+  },
+  hobbies() {
+    [
+      ["CleanTV — Android TV 4K Launcher &amp; Debloater", "Stripped 29+ background telemetry/ad services, built Apple TV 4K glassmorphism launcher with AdGuard Private DNS.", "Home Automation &amp; Embedded UI"],
+      ["Raspberry Pi Animatronic Robot &amp; PiKVM", "Interactive animatronics, SSD1306 I2C OLED eyes, pan/tilt PiGPIO servos, Flask IoT control, and headless PiKVM setup.", "Robotics &amp; Hardware Tinkering"],
+    ].forEach(([n, d, cat]) => {
+      line(`<span class="out-green">&gt; ${n}</span>`);
+      line(`  <span class="out-dim">${d}</span>`);
+      line(`  <span class="out-dim">${cat}</span>`);
     });
   },
   contact() {
@@ -406,6 +417,7 @@ const COMMANDS = {
 };
 COMMANDS["about"] = COMMANDS.whoami;
 COMMANDS["ls"] = COMMANDS.projects;
+COMMANDS["tinkering"] = COMMANDS.hobbies;
 
 function runCommand(raw) {
   const trimmed = raw.trim();

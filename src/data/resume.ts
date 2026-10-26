@@ -159,6 +159,45 @@ export const projects: Project[] = [
   },
 ];
 
+export type HobbyProject = {
+  name: string;
+  category: string;
+  description: string;
+  bullets: string[];
+  tags: string[];
+  iconType: "tv" | "cpu" | "sparkles";
+  repoUrl?: string;
+};
+
+export const hobbyProjects: HobbyProject[] = [
+  {
+    name: "CleanTV — Android TV 4K Launcher & Debloater",
+    category: "Home Automation & Embedded UI",
+    description: "System-level telemetry stripping, ad-blocking, and custom Apple TV 4K glassmorphism launcher",
+    iconType: "tv",
+    bullets: [
+      "Debloated 29+ background telemetry, tracking, and ad-delivery services on Android TV 11 via ADB without requiring root access.",
+      "Engineered an ad-free Apple TV 4K-style glassmorphism interface with dynamic ambient glow sampled from app banners, custom input pills, and persistent network status.",
+      "Configured system-wide encrypted Private DNS (AdGuard) blocking tracker domains and third-party sponsored suggestions across all streaming apps.",
+      "Wrote automated bash deployment and one-click rollback scripts for safe firmware maintenance.",
+    ],
+    tags: ["Android TV 11", "ADB Shell", "Glassmorphism UI", "Private DNS", "System Optimization"],
+  },
+  {
+    name: "Raspberry Pi Animatronic Robot & PiKVM",
+    category: "Robotics & Hardware Tinkering",
+    description: "Interactive animatronics, I2C OLED display, servo control, and headless Linux optimization",
+    iconType: "cpu",
+    bullets: [
+      "Engineered an interactive robot controller in Python with a Flask web UI, animating an SSD1306 I2C OLED display with real-time expressive eyes and emotion states.",
+      "Programmed angular servo motor controls for pan/tilt head movement using PiGPIO hardware PWM for jitter-free positioning.",
+      "Stripped unnecessary OS daemons (CUPS, cloud-init, RPC, background pollers) to maximize real-time GPIO responsiveness and reduce idle RAM usage.",
+      "Configured PiKVM for out-of-band headless server management with HDMI-CSI video capture and USB HID keyboard/mouse emulation.",
+    ],
+    tags: ["Raspberry Pi", "Python / Flask", "I2C OLED", "PiGPIO Servos", "PiKVM", "Embedded Linux"],
+  },
+];
+
 export const education = {
   degree: "B.E. Electronics & Communication Engineering",
   school: "University College of Engineering Tindivanam, Anna University",

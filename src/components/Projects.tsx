@@ -5,7 +5,7 @@ import { projects } from "../data/resume";
 
 export default function Projects() {
   return (
-    <Section id="projects" index="04" title="Selected Projects">
+    <Section id="projects" index="04" title="Data & AI Engineering Projects">
       <div className="grid grid-cols-1 gap-6">
         {projects.map((project, i) => (
           <motion.article
